@@ -1,0 +1,41 @@
+﻿@page "/"
+@inject IConfiguration _cfg
+@inject ICorreiosApp _app
+<h1>Hello, world!</h1>
+
+@*<EditForm>*@
+@*<DataAnnotationsValidator />
+    <ValidationSummary />*@
+
+<input type="text" id="Cep" @bind="@cep" />
+<button @onclick="@(()=>CarregaEndereco())">Carregar endereco</button>
+@*<button type="submit">Submit</button>*@
+@*</EditForm>*@
+
+
+
+
+    Welcome to your new app.
+@obj.Endereco
+
+@code{
+
+    [Parameter]
+    public string cep { get; set; }
+
+
+    private CorreioResponse obj;
+
+    public void CarregaEndereco()
+    {
+        obj = _app.RetornaEndereco(cep);
+
+    }
+
+    protected override void OnInitialized()
+    {
+        obj = new CorreioResponse();
+
+    }
+
+}

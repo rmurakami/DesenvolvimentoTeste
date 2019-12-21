@@ -1,0 +1,78 @@
+﻿@page "/filmes"
+
+@inject IJSRuntime _js
+
+@inject IConfiguration _cfg
+@inject IFilmeApp _app
+<h3>Filmes</h3>
+<div class="row">
+    <div class="col-md-6 col-xl-6">
+        <div class="form-group">
+            <label for="title">Titulo do filme</label>
+            <input type="text" class="form-control" id="titulo" @bind="@titulo">
+        </div>
+        <br />
+        <button class="btn btn-primary" @onclick="@(()=>CarregarFilme())">Carregar</button>
+    </div>
+</div>
+@if (!string.IsNullOrEmpty(obj.Title))
+{
+    <div class="how-section1">
+        <div class="row">
+            <div class="col-md-6 how-img">
+                <img src="@obj.Poster" class="img-fluid" alt="" />
+            </div>
+            <div class="col-md-6">
+                <h4>@obj.Title</h4>
+                <p class="text-muted">
+                    Gênero: @obj.Genre
+                </p>
+                <p class="text-muted">
+                    Ano: @obj.Year
+                </p>
+                <p class="text-muted">
+                    Descrição: @obj.Plot
+                </p>
+
+                <p class="text-muted">
+                    Diretor: @obj.Director
+                </p>
+                <p class="text-muted">
+                    Atores: @obj.Actors
+                </p>
+                <p class="text-muted">
+                    Duração: @obj.Runtime
+                </p>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public string titulo { get; set; }
+
+    private FilmeResponse obj;
+
+    public void CarregarFilme()
+    {
+        obj = _app.RetornaFilme(titulo);
+        if (string.IsNullOrEmpty(obj.Title))
+        {
+            _js.InvokeVoidAsync("bootbox.alert", "hello world");
+        }
+    }
+
+
+
+
+
+    protected override void OnInitialized()
+    {
+        obj = new FilmeResponse();
+
+    }
+
+}
