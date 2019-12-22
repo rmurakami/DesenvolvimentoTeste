@@ -12,41 +12,43 @@
             <input type="text" class="form-control" id="titulo" @bind="@titulo">
         </div>
         <br />
-        <button class="btn btn-primary" @onclick="@(()=>CarregarFilme())">Carregar</button>
+        @*<button class="btn btn-primary" @onclick="@(()=>CarregarFilme())">Carregar</button>*@
+    <button class="btn btn-primary" @onclick="CarregarFilme">Carregar</button>
+
     </div>
 </div>
 @if (!string.IsNullOrEmpty(obj.Title))
 {
-    <div class="how-section1">
-        <div class="row">
-            <div class="col-md-6 how-img">
-                <img src="@obj.Poster" class="img-fluid" alt="" />
-            </div>
-            <div class="col-md-6">
-                <h4>@obj.Title</h4>
-                <p class="text-muted">
-                    Gênero: @obj.Genre
-                </p>
-                <p class="text-muted">
-                    Ano: @obj.Year
-                </p>
-                <p class="text-muted">
-                    Descrição: @obj.Plot
-                </p>
+<div class="how-section1">
+    <div class="row">
+        <div class="col-md-6 how-img">
+            <img src="@obj.Poster" class="img-fluid" alt="" />
+        </div>
+        <div class="col-md-6">
+            <h4>@obj.Title</h4>
+            <p class="text-muted">
+                Gênero: @obj.Genre
+            </p>
+            <p class="text-muted">
+                Ano: @obj.Year
+            </p>
+            <p class="text-muted">
+                Descrição: @obj.Plot
+            </p>
 
-                <p class="text-muted">
-                    Diretor: @obj.Director
-                </p>
-                <p class="text-muted">
-                    Atores: @obj.Actors
-                </p>
-                <p class="text-muted">
-                    Duração: @obj.Runtime
-                </p>
+            <p class="text-muted">
+                Diretor: @obj.Director
+            </p>
+            <p class="text-muted">
+                Atores: @obj.Actors
+            </p>
+            <p class="text-muted">
+                Duração: @obj.Runtime
+            </p>
 
-            </div>
         </div>
     </div>
+</div>
 }
 
 
@@ -58,10 +60,12 @@
 
     public void CarregarFilme()
     {
+        
+
         obj = _app.RetornaFilme(titulo);
         if (string.IsNullOrEmpty(obj.Title))
         {
-            _js.InvokeVoidAsync("bootbox.alert", "hello world");
+            _js.InvokeVoidAsync("bootbox.alert", "Filme não encontrado.");
         }
     }
 

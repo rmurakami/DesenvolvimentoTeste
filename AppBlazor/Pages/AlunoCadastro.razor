@@ -1,0 +1,30 @@
+﻿@inject NavigationManager _redireciona
+
+@page "/alunocadastro/{EscolaId}/{AlunoId}"
+@inject IEscolaApp _appEscola
+<h3>Cadastro Aluno</h3>
+@if (string.IsNullOrEmpty(Escola.NomeEscola))
+{
+    <h4>Escola: Escola não encontrada.</h4>
+    <a href="/" class="btn btn-secondary">Voltar</a>
+}
+else
+{
+    <h4>Escola: @Escola.NomeEscola</h4>
+}
+
+
+@code {
+    [Parameter]
+    public string EscolaId { get; set; }
+
+    [Parameter]
+    public string AlunoId { get; set; }
+
+    private Escola Escola;
+    protected override void OnInitialized()
+    {
+        Escola = _appEscola.Carregar(EscolaId);
+
+    }
+}

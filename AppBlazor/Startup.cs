@@ -34,6 +34,8 @@ namespace AppBlazor
          
             services.AddTransient<ICorreiosApp, CorreioApp>();
             services.AddTransient<IFilmeApp, FilmeApp>();
+            services.AddTransient<IEstadoApp, EstadoApp>();
+            services.AddTransient<IEscolaApp, EscolaApp>();
 
 
 
@@ -61,6 +63,7 @@ namespace AppBlazor
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
         }
     }
 }

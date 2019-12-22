@@ -1,22 +1,55 @@
 ﻿@page "/"
+
 @inject IConfiguration _cfg
+@inject IEscolaApp _appEscola
+
+
 @inject ICorreiosApp _app
-<h1>Hello, world!</h1>
+@inject IEstadoApp _appEstado
+<h1>Escolas</h1>
+
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Endereço</th>
+            <th>UF</th>
+            <th>Ações</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var escola in Escolas)
+        {
+            <tr>
+                <td>@escola.NomeEscola</td>
+                <td></td>
+                <td>@escola.Estado.Uf</td>
+                <td><a href="alunoslistar/@escola.EscolaId" class="btn btn-primary"><i class="oi oi-people"></i> Alunos</a></td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
 
 @*<EditForm>*@
 @*<DataAnnotationsValidator />
     <ValidationSummary />*@
 
-<input type="text" id="Cep" @bind="@cep" />
-<button @onclick="@(()=>CarregaEndereco())">Carregar endereco</button>
+@*<input type="text" id="Cep" @bind="@cep" />
+    <button @onclick="@(()=>CarregaEndereco())">Carregar endereco</button>*@
 @*<button type="submit">Submit</button>*@
 @*</EditForm>*@
 
+@*@foreach (var estado in Estados)
+    {
+        @estado.Nome <br />
+    }*@
 
 
-
-    Welcome to your new app.
-@obj.Endereco
+@*Welcome to your new app.
+    @obj.Endereco*@
 
 @code{
 
@@ -24,18 +57,24 @@
     public string cep { get; set; }
 
 
+    private IList<Escola> Escolas;
+
     private CorreioResponse obj;
 
     public void CarregaEndereco()
     {
-        obj = _app.RetornaEndereco(cep);
+        // obj = _app.RetornaEndereco(cep);
 
     }
 
     protected override void OnInitialized()
     {
+        Escolas = new List<Escola>();
+
         obj = new CorreioResponse();
 
+        Escolas = _appEscola.Listar();
     }
+
 
 }

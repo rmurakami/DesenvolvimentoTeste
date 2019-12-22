@@ -1,0 +1,27 @@
+﻿@page "/alunoslistar/{EscolaId}"
+@inject IEscolaApp _appEscola
+<h3>AlunosListar</h3>
+@if (!string.IsNullOrEmpty(Escola.NomeEscola))
+{
+    <h4>Escola: @Escola.NomeEscola</h4>
+}
+else
+{
+    <h4>Escola não encontrada</h4>
+}
+<a href="/" class="btn btn-primary"><i class="oi oi-arrow-left"></i> Voltar</a>&nbsp;&nbsp;&nbsp;
+@if (!string.IsNullOrEmpty(Escola.NomeEscola))
+{
+    <button class="btn btn-primary">Novo Aluno</button>
+}
+
+@code {
+    [Parameter]
+    public string EscolaId { get; set; }
+
+    private Escola Escola;
+    protected override void OnInitialized()
+    {
+        Escola = _appEscola.Carregar(EscolaId);
+    }
+}

@@ -10,6 +10,9 @@ namespace Application
         public App()
         {
             _svc = _serviceProvider.GetRequiredService<T>();
+            
+
+
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Domain.Models
 {
@@ -10,8 +11,9 @@ namespace Domain.Models
         public string Numero { get; set; }
         public string Complemento { get; set; }
         public string Bairro { get; set; }
-        public string Uf { get; set; }
+        public string Cidade { get; set; }
         public string Cep { get; set; }
-
+        public virtual IList<Aluno> Alunos { get; set; }
+        public virtual Estado Estado { get; set; }
     }
 }
