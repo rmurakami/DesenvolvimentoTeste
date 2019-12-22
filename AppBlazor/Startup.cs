@@ -36,6 +36,7 @@ namespace AppBlazor
             services.AddTransient<IFilmeApp, FilmeApp>();
             services.AddTransient<IEstadoApp, EstadoApp>();
             services.AddTransient<IEscolaApp, EscolaApp>();
+            services.AddTransient<IAlunoApp, AlunoApp>();
 
 
 

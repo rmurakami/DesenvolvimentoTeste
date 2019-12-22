@@ -25,6 +25,15 @@
       "provider": "unpkg",
       "library": "jquery@3.4.1",
       "destination": "wwwroot/js/jquery/"
+    },
+    {
+      "library": "jquery.mask@1.14.16",
+      "destination": "wwwroot/js/jquery.mask/"
     }
-  ]
+  ,
+{
+  "library": "jquery.mask@1.14.16",
+  "destination": "wwwroot/js/jquery.mask/"
+}
+]
 }

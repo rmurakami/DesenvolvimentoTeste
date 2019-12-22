@@ -1,5 +1,7 @@
 ﻿@page "/alunoslistar/{EscolaId}"
 @inject IEscolaApp _appEscola
+@inject IAlunoApp _appAluno
+@inject IJSRuntime _js
 <h3>AlunosListar</h3>
 @if (!string.IsNullOrEmpty(Escola.NomeEscola))
 {
@@ -9,19 +11,63 @@ else
 {
     <h4>Escola não encontrada</h4>
 }
-<a href="/" class="btn btn-primary"><i class="oi oi-arrow-left"></i> Voltar</a>&nbsp;&nbsp;&nbsp;
+<a href="" class="btn btn-primary"><i class="oi oi-arrow-left"></i> Voltar</a>&nbsp;&nbsp;&nbsp;
 @if (!string.IsNullOrEmpty(Escola.NomeEscola))
 {
-    <button class="btn btn-primary">Novo Aluno</button>
+    <a href="/alunocadastro/@EscolaId/" class="btn btn-primary">Novo Aluno</a>
 }
+<br />
+<br />
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>CPF</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var aluno in Alunos)
+        {
+            <tr>
+                <td>@aluno.Cpf</td>
+                <td>@aluno.Nome</td>
+                <td>@aluno.Email</td>
+                <td>
+                    <a href="/AlunoCadastro/@EscolaId/@aluno.AlunoId" class="btn btn-secondary">Editar</a>
+
+                    <button class="btn btn-primary" @onclick="@(()=>FcnExcluir(aluno.AlunoId.ToString()))">Excluir</button>
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
 
 @code {
     [Parameter]
     public string EscolaId { get; set; }
 
     private Escola Escola;
+    public List<Aluno> Alunos;
     protected override void OnInitialized()
     {
         Escola = _appEscola.Carregar(EscolaId);
+        Alunos = _appAluno.Listar(EscolaId);
+
+    }
+
+    private void FcnExcluir(string alunoId)
+    {
+        _appAluno.Excluir(alunoId);
+
+        _js.InvokeVoidAsync("bootbox.alert", "Aluno excluído com sucesso.");
+
+        Alunos = _appAluno.Listar(EscolaId);
+
     }
 }

@@ -7,5 +7,6 @@ namespace Domain.Interfaces.Application
     public interface IEstadoApp : INotifiable
     {
         IList<Estado> Listar();
+        Estado Carregar(string uf);
     }
 }

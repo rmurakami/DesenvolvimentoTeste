@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Domain.Args;
+using Domain.Models;
+using prmToolkit.NotificationPattern;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Interfaces.Application
 {
-    public interface IAlunoApp
+    public interface IAlunoApp : INotifiable
     {
-        
+        Aluno Carregar(string cpf);
+        List<Aluno> Listar(string escolaId);
+        void Excluir(string alunoId);
+        void Gravar(AlunoRequest obj);
     }
 }

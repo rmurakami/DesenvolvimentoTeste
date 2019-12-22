@@ -1,18 +1,199 @@
 ﻿@inject NavigationManager _redireciona
-
-@page "/alunocadastro/{EscolaId}/{AlunoId}"
+@inject ICorreiosApp _appCorreio
 @inject IEscolaApp _appEscola
+@inject IEstadoApp _appEstado
+@inject IAlunoApp _appAluno
+@inject IJSRuntime _js
+@page "/alunocadastro/{EscolaId}"
+@page "/alunocadastro/{EscolaId}/{AlunoId}"
+
 <h3>Cadastro Aluno</h3>
 @if (string.IsNullOrEmpty(Escola.NomeEscola))
 {
     <h4>Escola: Escola não encontrada.</h4>
-    <a href="/" class="btn btn-secondary">Voltar</a>
+    <a href="/testejob" class="btn btn-secondary">Voltar</a>
 }
 else
 {
     <h4>Escola: @Escola.NomeEscola</h4>
 }
+<EditForm Model="@AlunoFrm" OnValidSubmit="@Enviar">
+    <DataAnnotationsValidator />
+    @*<ValidationSummary />*@
+    <div class="row">
+        <div class="col-md-6 col-xl-6">
+            <div class="form-group">
+                <label for="cpf">CPF</label>
+                <InputText id="cpf" class="form-control" @bind-Value="AlunoFrm.Cpf" />
+                <ValidationMessage For="@(() => AlunoFrm.Cpf)" />
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-6">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <InputText id="nome" class="form-control" @bind-Value="AlunoFrm.Nome" />
+                <ValidationMessage For="@(() => AlunoFrm.Nome)" />
 
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-xl-6">
+            <div class="form-group">
+                <label for="pai">Pai</label>
+                <InputText id="pai" class="form-control" @bind-Value="AlunoFrm.NomePai" />
+                <ValidationMessage For="@(() => AlunoFrm.NomePai)" />
+
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-6">
+            <div class="form-group">
+                <label for="mae">Mãe</label>
+                <InputText id="mae" class="form-control" @bind-Value="AlunoFrm.NomeMae" />
+                <ValidationMessage For="@(() => AlunoFrm.NomeMae)" />
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 col-xl-5">
+            <div class="form-group">
+                <label for="dtNascimento">Data de nascimento</label>
+                <InputDate id="dtNascimento" class="form-control" @bind-Value="AlunoFrm.DtNascimento" />
+                <ValidationMessage For="@(() => AlunoFrm.DtNascimento)" />
+
+            </div>
+        </div>
+        <div class="col-md-5 col-xl-5">
+            <div class="form-group">
+                <label for="sexo">Sexo</label>
+                <InputSelect id="sexo" class="form-control" @bind-Value="AlunoFrm.Sexo">
+                    <option value="">-- Selecione --</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                </InputSelect>
+                <ValidationMessage For="@(() => AlunoFrm.Sexo)" />
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-xl-6">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <InputText id="email" class="form-control" @bind-Value="AlunoFrm.Email" />
+                <ValidationMessage For="@(() => AlunoFrm.Email)" />
+
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-6">
+            <div class="form-group">
+                <label for="nacionalidade">Nacionalidade</label>
+                <InputText id="nacionalidade" class="form-control" @bind-Value="AlunoFrm.Nacionalidade" />
+                <ValidationMessage For="@(() => AlunoFrm.Nacionalidade)" />
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4 col-xl-4">
+            <div class="form-group">
+                <label for="cep">CEP</label>
+                <div class="input-group mb-4">
+
+                    <InputText id="cep" class="form-control" @bind-Value="AlunoFrm.Cep" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" @onclick="CarregarEndereco" type="button">Carregar</button>
+                    </div>
+
+                    <ValidationMessage For="@(() => AlunoFrm.Cep)" />
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-6">
+            <div class="form-group">
+                <label for="endereco">Endereço</label>
+                <InputText id="endereco" class="form-control" @bind-Value="AlunoFrm.Endereco" />
+                <ValidationMessage For="@(() => AlunoFrm.Endereco)" />
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-xl-4">
+            <div class="form-group">
+                <label for="numero">Número</label>
+                <InputText id="numero" class="form-control" @bind-Value="AlunoFrm.Numero" />
+            </div>
+        </div>
+        <div class="col-md-4 col-xl-4">
+            <div class="form-group">
+                <label for="complemento">Complemento</label>
+                <InputText id="complemento" class="form-control" @bind-Value="AlunoFrm.Complemento" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-xl-6">
+            <div class="form-group">
+                <label for="bairro">Bairro</label>
+                <InputText id="bairro" class="form-control" @bind-Value="AlunoFrm.Bairro" />
+                <ValidationMessage For="@(() => AlunoFrm.Bairro)" />
+
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-6">
+            <div class="form-group">
+                <label for="cidade">Cidade</label>
+                <InputText id="cidade" class="form-control" @bind-Value="AlunoFrm.Cidade" />
+                <ValidationMessage For="@(() => AlunoFrm.Cidade)" />
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 col-xl-5">
+            <div class="form-group">
+                <label for="uf">UF</label>
+                <InputSelect id="uf" class="form-control" @bind-Value="AlunoFrm.EstadoId">
+                    <option value="">-- Selecione --</option>
+                    @foreach (var estado in EstadosFrm)
+                    {
+                        <option value="@estado.Uf">@estado.Nome</option>
+
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => AlunoFrm.EstadoId)" />
+
+            </div>
+        </div>
+
+        <div class="col-md-5 col-xl-5">
+            <div class="form-group">
+                <label for="escola">Escola</label>
+                <InputSelect id="escola" class="form-control" @bind-Value="AlunoFrm.EscolaId">
+                    <option value="">-- Selecione --</option>
+                    @foreach (var escola in EscolasFrm)
+                    {
+                        <option value="@escola.EscolaId">@escola.NomeEscola</option>
+
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => AlunoFrm.EscolaId)" />
+
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-md-12 col-xl-12">
+        <button type="submit" class="btn btn-primary"><i class="oi oi-document"></i> Salvar</button>
+    </div>
+</EditForm>
 
 @code {
     [Parameter]
@@ -21,10 +202,57 @@ else
     [Parameter]
     public string AlunoId { get; set; }
 
+    private List<Domain.Models.Escola> EscolasFrm;
+    private List<Domain.Models.Estado> EstadosFrm;
+    private AlunoRequest AlunoFrm;
     private Escola Escola;
+    private CorreioResponse Correio = new CorreioResponse();
+    private List<AlunoTelefoneRequest> Telefones;
+
     protected override void OnInitialized()
     {
+        AlunoFrm = new AlunoRequest();
+
         Escola = _appEscola.Carregar(EscolaId);
+        EstadosFrm = _appEstado.Listar().ToList();
+        EscolasFrm = _appEscola.Listar().ToList();
+        Telefones = new List<AlunoTelefoneRequest>();
+    }
+
+
+    private void CarregarEndereco()
+    {
+        Correio = _appCorreio.RetornaEndereco(AlunoFrm.Cep);
+        if (!string.IsNullOrEmpty(Correio.Endereco))
+        {
+            AlunoFrm.Endereco = Correio.Endereco;
+            AlunoFrm.Bairro = Correio.Bairro;
+            AlunoFrm.Cidade = Correio.Cidade;
+            AlunoFrm.EstadoId = Correio.Uf;
+        }
+        else
+        {
+            _js.InvokeVoidAsync("bootbox.alert", "Endereço não encontrado.");
+        }
+    }
+
+    private void Enviar()
+    {
+        AlunoFrm.AlunoId = AlunoId;
+
+        _appAluno.Gravar(AlunoFrm);
+        if (_appAluno.Notifications.Count() > 0)
+        {
+            _js.InvokeVoidAsync("bootbox.alert", "Erro ao incluir o aluno.");
+
+        }
+        else
+        {
+            _redireciona.NavigateTo("/alunoslistar/" + EscolaId);
+
+        }
 
     }
+
+
 }

@@ -22,5 +22,20 @@ namespace Application
             }
             return lista;
         }
+
+        public Estado Carregar(string uf)
+        {
+            var obj = new Estado();
+            try
+            {
+                obj = _svc.Get(m=>m.Uf==uf).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                AddNotification("EstadoApp.Listar", ex.Message);
+            }
+            return obj;
+        }
+
     }
 }
